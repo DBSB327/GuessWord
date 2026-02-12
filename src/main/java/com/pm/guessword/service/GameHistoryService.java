@@ -21,12 +21,11 @@ public class GameHistoryService {
 
     private final GameHistoryRepository gameHistoryRepository;
     private final GameHistoryMapper gameHistoryMapper;
-    private final UserRepository userRepository;
     private final QuestionRepository questionRepository;
+    private final UserService userService;
 
-    public GameHistoryResponse startGame(Long userId) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+    public GameHistoryResponse startGame() {
+        User user = userService.getCurrentUser();
         Question question = questionRepository.findRandomQuestion();
 
         if(question == null) {
@@ -95,9 +94,8 @@ public class GameHistoryService {
         return gameHistoryMapper.toResponse(saved);
     }
 
-    public List<GameHistoryResponse> getAllUserGames (Long userId){
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+    public List<GameHistoryResponse> getAllUserGames (){
+        User user = userService.getCurrentUser();
         List<GameHistory> gameHistories = gameHistoryRepository.findByUser(user);
         List<GameHistoryResponse> responses = new ArrayList<>();
         for(GameHistory gameHistory: gameHistories) {

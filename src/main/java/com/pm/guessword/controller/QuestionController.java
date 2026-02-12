@@ -18,9 +18,9 @@ public class QuestionController {
 
     private final QuestionService questionService;
 
-    @PostMapping("/{adminId}")
-    public ResponseEntity<QuestionResponse> createQuestion(@RequestBody QuestionRequest questionRequest, @RequestParam Long adminId) {
-        QuestionResponse questionResponse = questionService.addQuestion(questionRequest, adminId);
+    @PostMapping
+    public ResponseEntity<QuestionResponse> createQuestion(@RequestBody QuestionRequest questionRequest) {
+        QuestionResponse questionResponse = questionService.addQuestion(questionRequest);
         return ResponseEntity.ok(questionResponse);
     }
 

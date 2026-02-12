@@ -16,9 +16,9 @@ public class GameController {
 
     private final GameHistoryService gameHistoryService;
 
-    @PostMapping("/start/{userId}")
-    public ResponseEntity<GameHistoryResponse> startGame(@PathVariable Long userId){
-        GameHistoryResponse gameHistoryResponse = gameHistoryService.startGame(userId);
+    @PostMapping("/start")
+    public ResponseEntity<GameHistoryResponse> startGame(){
+        GameHistoryResponse gameHistoryResponse = gameHistoryService.startGame();
         return ResponseEntity.ok(gameHistoryResponse);
     }
 
@@ -34,9 +34,9 @@ public class GameController {
         return ResponseEntity.ok(gameHistoryResponse);
     }
 
-    @GetMapping("/user/{userId}")
-    public ResponseEntity<List<GameHistoryResponse>> getUserGames(@PathVariable Long userId){
-        List<GameHistoryResponse> gameHistoryResponses = gameHistoryService.getAllUserGames(userId);
+    @GetMapping("/user")
+    public ResponseEntity<List<GameHistoryResponse>> getUserGames(){
+        List<GameHistoryResponse> gameHistoryResponses = gameHistoryService.getAllUserGames();
         return ResponseEntity.ok(gameHistoryResponses);
     }
 }

@@ -8,13 +8,12 @@ import com.pm.guessword.model.User;
 import com.pm.guessword.repository.QuestionRepository;
 import com.pm.guessword.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.expression.spel.ast.QualifiedIdentifier;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 @Service
 @RequiredArgsConstructor
@@ -22,13 +21,12 @@ public class QuestionService {
 
     private final QuestionRepository questionRepository;
     private final QuestionMapper questionMapper;
-    private final UserRepository userRepository;
+    private final UserService userService;
 
-    public QuestionResponse addQuestion(QuestionRequest questionRequest, Long adminId) {
-        User admin = userRepository.findById(adminId)
-                .orElseThrow(() -> new RuntimeException("Admin not found"));
+    public QuestionResponse addQuestion(QuestionRequest questionRequest ) {
+        User currentUser = userService.getCurrentUser();
         Question question = questionMapper.toEntity(questionRequest);
-        question.setCreatedBy(admin);
+        question.setCreatedBy(currentUser);
         var saved =  questionRepository.save(question);
         return questionMapper.toResponse(saved);
     }
@@ -54,5 +52,4 @@ public class QuestionService {
     public void deleteQuestion(Long id) {
         questionRepository.deleteById(id);
     }
-
 }
