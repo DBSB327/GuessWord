@@ -9,12 +9,16 @@ import com.pm.guessword.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,52 +37,52 @@ public class UserService {
                 .orElseThrow(() -> new UsernameNotFoundException("User with username: " + username + " not found"));
     }
 
+    @Transactional
     public UserResponse createUser(UserRequest request) {
         if (userRepository.existsByUsername(request.getUsername())) {
-            throw new RuntimeException("Username is already in use");
+            throw new IllegalArgumentException("Username is already in use");
         }
 
         User user = userMapper.toEntity(request);
         user.setRole(Role.USER);
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
         var saved = userRepository.save(user);
         return userMapper.toResponse(saved);
     }
 
+    @Transactional
     public UserResponse updateUser(Long userId, UserRequest userRequest) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new EntityNotFoundException("User not found"));
+                .orElseThrow(() -> new EntityNotFoundException("User with id: " + userId + " not found"));
         if (!user.getUsername().equals(userRequest.getUsername()) && userRepository.existsByUsername(userRequest.getUsername())) {
-            throw new RuntimeException("Username is already in use");
+            throw new IllegalArgumentException("Username is already in use");
         }
 
         user.setUsername(userRequest.getUsername());
-        if(userRequest.getPassword() != null && !user.getPassword().isBlank()){
-            user.setPassword(passwordEncoder.encode(user.getPassword()));
+        if(userRequest.getPassword() != null && !userRequest.getPassword().isBlank()){
+            user.setPassword(passwordEncoder.encode(userRequest.getPassword()));
         }
         var updated = userRepository.save(user);
         return userMapper.toResponse(updated);
 
     }
 
+    @Transactional(readOnly = true)
     public UserResponse getUserById(Long userId) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+        User user = userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("User not found"));
         return userMapper.toResponse(user);
     }
+    @Transactional(readOnly = true)
+    public Page<UserResponse> getAllUsers(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<User> usersPage = userRepository.findAll(pageable);
 
-    public List<UserResponse> getAllUsers() {
-        List<User> users = userRepository.findAll();
-        List<UserResponse> responses = new ArrayList<>();
-
-        for (User user : users) {
-            responses.add(userMapper.toResponse(user));
-        }
-
-        return responses;
+        return usersPage.map(user -> userMapper.toResponse(user));
     }
-
+    @Transactional
     public void deleteUser(Long userId) {
         if (!userRepository.existsById(userId)) {
-            throw new RuntimeException("User with id " + userId + " does not exist");
+            throw new EntityNotFoundException("User with id " + userId + " does not exist");
         }
         userRepository.deleteById(userId);
     }

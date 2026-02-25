@@ -4,6 +4,7 @@ import com.pm.guessword.dto.GameHistoryResponse;
 import com.pm.guessword.service.GameHistoryService;
 import com.pm.guessword.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,8 +36,8 @@ public class GameController {
     }
 
     @GetMapping("/user")
-    public ResponseEntity<List<GameHistoryResponse>> getUserGames(){
-        List<GameHistoryResponse> gameHistoryResponses = gameHistoryService.getAllUserGames();
+    public ResponseEntity<Page<GameHistoryResponse>> getUserGames(@RequestParam int page, @RequestParam int size){
+        Page<GameHistoryResponse> gameHistoryResponses = gameHistoryService.getAllUserGames(page, size);
         return ResponseEntity.ok(gameHistoryResponses);
     }
 }

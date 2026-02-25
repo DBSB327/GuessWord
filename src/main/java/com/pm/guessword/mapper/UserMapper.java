@@ -19,8 +19,6 @@ public class UserMapper {
     public User toEntity(UserRequest userRequest){
         User user = new User();
         user.setUsername(userRequest.getUsername());
-        user.setPassword(userRequest.getPassword());
-        user.setRole(user.getRole());
         return user;
     }
 }
