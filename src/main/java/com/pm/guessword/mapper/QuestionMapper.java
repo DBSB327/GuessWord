@@ -1,6 +1,5 @@
 package com.pm.guessword.mapper;
 
-import com.pm.guessword.dto.QuestionAdminResponse;
 import com.pm.guessword.dto.QuestionRequest;
 import com.pm.guessword.dto.QuestionResponse;
 import com.pm.guessword.model.Question;

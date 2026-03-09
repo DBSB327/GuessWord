@@ -1,6 +1,7 @@
 package com.pm.guessword.controller;
 
 import com.pm.guessword.dto.GameHistoryResponse;
+import com.pm.guessword.enums.GameStatus;
 import com.pm.guessword.service.GameHistoryService;
 import com.pm.guessword.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -41,8 +42,12 @@ public class GameController {
 
     @GetMapping("/user")
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
-    public ResponseEntity<Page<GameHistoryResponse>> getUserGames(@RequestParam int page, @RequestParam int size){
-        Page<GameHistoryResponse> gameHistoryResponses = gameHistoryService.getAllUserGames(page, size);
+    public ResponseEntity<Page<GameHistoryResponse>> getUserGames(@RequestParam(defaultValue = "0") int page,
+                                                                  @RequestParam(defaultValue = "10") int size,
+                                                                  @RequestParam(defaultValue = "date") String sortBy,
+                                                                  @RequestParam(defaultValue = "DESC") String direction,
+                                                                  @RequestParam(required = false) GameStatus statusFilter){
+        Page<GameHistoryResponse> gameHistoryResponses = gameHistoryService.getAllUserGames(page, size, sortBy,  direction, statusFilter);
         return ResponseEntity.ok(gameHistoryResponses);
     }
 }

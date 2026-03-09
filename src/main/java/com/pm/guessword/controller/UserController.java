@@ -2,6 +2,7 @@ package com.pm.guessword.controller;
 
 import com.pm.guessword.dto.UserRequest;
 import com.pm.guessword.dto.UserResponse;
+import com.pm.guessword.enums.Role;
 import com.pm.guessword.model.User;
 import com.pm.guessword.service.UserService;
 import jakarta.validation.Valid;
@@ -20,6 +21,19 @@ public class UserController {
 
     private final UserService userService;
 
+    @GetMapping
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public ResponseEntity<Page<UserResponse>> getAllUsers(@RequestParam(defaultValue = "") String username,
+                                                          @RequestParam(defaultValue = "10") int size,
+                                                          @RequestParam(defaultValue = "id") String sortBy,
+                                                          @RequestParam(defaultValue = "DESC") String direction,
+                                                          @RequestParam(defaultValue = "0") int page,
+                                                          @RequestParam(required = false) Role roleFilter) {
+
+        Page<UserResponse> userResponses = userService.getAllUsers(username, size, sortBy, direction, page, roleFilter);
+        return ResponseEntity.ok(userResponses);
+    }
+
     @PostMapping
     @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<UserResponse> createUser(@RequestBody @Valid UserRequest userRequest) {
@@ -34,12 +48,6 @@ public class UserController {
         return ResponseEntity.ok(userResponse);
     }
 
-    @GetMapping
-    @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<Page<UserResponse>> getAllUsers(@RequestParam int page, @RequestParam int size) {
-        Page<UserResponse> userResponses = userService.getAllUsers(page, size);
-        return ResponseEntity.ok(userResponses);
-    }
 
     @PutMapping("/{userId}")
     @PreAuthorize("hasAuthority('ADMIN')")

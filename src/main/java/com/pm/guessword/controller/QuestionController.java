@@ -29,8 +29,12 @@ public class QuestionController {
 
     @GetMapping
     @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<Page<QuestionResponse>> getAllQuestions(@RequestParam int page, @RequestParam int size) {
-        Page<QuestionResponse> questionResponses = questionService.getAllQuestions(page, size);
+    public ResponseEntity<Page<QuestionResponse>> getAllQuestions(@RequestParam(defaultValue = "") String text,
+                                                                  @RequestParam(defaultValue = "0") int page,
+                                                                  @RequestParam(defaultValue = "10") int size,
+                                                                  @RequestParam(defaultValue = "id") String sortBy,
+                                                                  @RequestParam(defaultValue = "DESC") String direction) {
+        Page<QuestionResponse> questionResponses = questionService.getAllQuestions(text, page,size, sortBy, direction);
         return ResponseEntity.ok(questionResponses);
     }
 

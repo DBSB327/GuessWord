@@ -27,12 +27,20 @@ public class GameHistory {
     @Column(nullable = false)
     private String guessedWord;
 
+    @Column(nullable = false)
     private boolean correct;
 
     private LocalDateTime date = LocalDateTime.now();
 
     @Enumerated(EnumType.STRING)
-    private GameStatus status;
+    private GameStatus status = GameStatus.IN_PROGRESS;
 
     private int attempts;
+
+    @Column(nullable = false)
+    private int maxAttempts;
+
+    private int earnedScore;
+
+    private int remainingWordGuesses;
 }

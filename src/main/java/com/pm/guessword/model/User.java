@@ -33,6 +33,8 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private Role role;
 
+    private int totalScore = 0;
+
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
     private List<GameHistory> games;
 

@@ -1,6 +1,4 @@
 package com.pm.guessword.controller;
-
-
 import com.pm.guessword.dto.securityDTO.AuthRequest;
 import com.pm.guessword.dto.securityDTO.JwtAuthResponse;
 import com.pm.guessword.dto.securityDTO.RefreshTokenRequest;

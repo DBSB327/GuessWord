@@ -1,5 +1,6 @@
 package com.pm.guessword.repository;
 
+import com.pm.guessword.enums.GameStatus;
 import com.pm.guessword.model.GameHistory;
 import com.pm.guessword.model.User;
 import org.springframework.data.domain.Page;
@@ -12,4 +13,6 @@ import java.util.List;
 @Repository
 public interface GameHistoryRepository extends JpaRepository<GameHistory, Long> {
     Page<GameHistory> findByUser(User user, Pageable pageable);
+
+    Page<GameHistory> findByUserAndStatus(User user, GameStatus status, Pageable pageable);
 }

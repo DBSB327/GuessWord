@@ -12,4 +12,5 @@ public class GameHistoryResponse {
     private boolean correct;
     private int attempts;
     private LocalDateTime date;
+    private int earnedScore;
 }

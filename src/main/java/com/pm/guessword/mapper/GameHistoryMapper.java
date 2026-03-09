@@ -15,6 +15,7 @@ public class GameHistoryMapper {
         response.setCorrect(game.isCorrect());
         response.setAttempts(game.getAttempts());
         response.setDate(game.getDate());
+        response.setEarnedScore(game.getEarnedScore());
         return response;
     }
 
