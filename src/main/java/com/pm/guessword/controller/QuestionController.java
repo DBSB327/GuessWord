@@ -4,6 +4,7 @@ import com.pm.guessword.dto.QuestionRequest;
 import com.pm.guessword.dto.QuestionResponse;
 import com.pm.guessword.model.User;
 import com.pm.guessword.service.QuestionService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -15,6 +16,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/questions")
+@Tag(name = "Question Controller")
 @RequiredArgsConstructor
 public class QuestionController {
 

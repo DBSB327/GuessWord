@@ -4,6 +4,7 @@ import com.pm.guessword.dto.securityDTO.JwtAuthResponse;
 import com.pm.guessword.dto.securityDTO.RefreshTokenRequest;
 import com.pm.guessword.model.User;
 import com.pm.guessword.security.AuthService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/auth")
+@Tag(name = "Auth Controller")
 @RequiredArgsConstructor
 public class AuthController {
 

@@ -5,6 +5,7 @@ import com.pm.guessword.dto.UserResponse;
 import com.pm.guessword.enums.Role;
 import com.pm.guessword.model.User;
 import com.pm.guessword.service.UserService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -16,6 +17,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/users")
+@Tag(name = "User Controller")
 @RequiredArgsConstructor
 public class UserController {
 

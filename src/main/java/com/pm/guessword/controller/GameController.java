@@ -4,6 +4,8 @@ import com.pm.guessword.dto.GameHistoryResponse;
 import com.pm.guessword.enums.GameStatus;
 import com.pm.guessword.service.GameHistoryService;
 import com.pm.guessword.service.UserService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +16,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/games")
+@Tag(name = "Game Controller")
 @RequiredArgsConstructor
 public class GameController {
 
