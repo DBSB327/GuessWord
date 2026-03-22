@@ -5,6 +5,7 @@ import com.pm.guessword.dto.securityDTO.RefreshTokenRequest;
 import com.pm.guessword.model.User;
 import com.pm.guessword.security.AuthService;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,19 +22,19 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/signUp")
-    public ResponseEntity<User> signUp (@RequestBody AuthRequest authRequest){
+    public ResponseEntity<User> signUp (@RequestBody @Valid AuthRequest authRequest){
         User user = authService.signUp(authRequest);
         return ResponseEntity.ok(user);
     }
 
     @PostMapping("/signIn")
-    public ResponseEntity<JwtAuthResponse> signIn (@RequestBody AuthRequest authRequest){
+    public ResponseEntity<JwtAuthResponse> signIn (@RequestBody @Valid AuthRequest authRequest){
         JwtAuthResponse response =  authService.signIn(authRequest);
         return ResponseEntity.ok(response);
     }
 
     @PostMapping("/refresh")
-    public ResponseEntity<JwtAuthResponse> refresh (@RequestBody RefreshTokenRequest refreshTokenRequest){
+    public ResponseEntity<JwtAuthResponse> refresh (@RequestBody @Valid RefreshTokenRequest refreshTokenRequest){
         JwtAuthResponse response =  authService.refreshToken(refreshTokenRequest);
         return ResponseEntity.ok(response);
     }
